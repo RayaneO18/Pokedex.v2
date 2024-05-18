@@ -56,7 +56,7 @@ const PokemonApp = () => {
 
   const resetPokemonList = async () => {
     setPokemonList([]);
-    setLimit(30);
+    setLimit(1);
     setPokemonMap(new Map());
     await fetchInitialPokemon();
   };
