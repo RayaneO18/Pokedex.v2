@@ -8,53 +8,57 @@ const PokemonApp = () => {
   const [pokemonMap, setPokemonMap] = useState(new Map());
 
   useEffect(() => {
-    let i = 1;
-    const interval = setInterval(() => {
-      if (i <= limit && i <= 150) {
-        listPokemon(`${i}`);
-        i++;
-      }
-    }, 20);
-    return () => clearInterval(interval);
-  }, [limit]);
+    fetchInitialPokemon();
+  }, []);
 
-  const listPokemon = (pokemonName) => {
-    fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (!pokemonMap.has(data.id)) {
-          setPokemonMap((prevMap) => new Map(prevMap).set(data.id, true));
-          setPokemonList((prevList) => [...prevList, data]);
-        }
-      });
+  const fetchInitialPokemon = async () => {
+    for (let i = 1; i <= limit; i++) {
+      await listPokemon(i);
+    }
   };
 
-  const handleSearch = (event) => {
+  const listPokemon = async (pokemonIdOrName) => {
+    try {
+      const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonIdOrName}`);
+      const data = await res.json();
+      if (!pokemonMap.has(data.id)) {
+        setPokemonMap((prevMap) => new Map(prevMap).set(data.id, true));
+        setPokemonList((prevList) => {
+          const newList = [...prevList, data];
+          const uniqueList = Array.from(new Set(newList.map(p => p.id)))
+                                  .map(id => newList.find(p => p.id === id));
+          return uniqueList;
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching Pokémon data:", error);
+    }
+  };
+
+  const handleSearch = async (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
       const searchPokemon = searchTerm.toLowerCase();
       setPokemonList([]);
-      listPokemon(searchPokemon);
+      setPokemonMap(new Map());
+      await listPokemon(searchPokemon);
       setSearchTerm("");
     }
   };
 
-  const loadMorePokemon = () => {
+  const loadMorePokemon = async () => {
     const nextLimit = limit + 15;
-    if (nextLimit <= 150) {
-      for (let i = limit + 1; i <= nextLimit; i++) {
-        if (i <= 150) {
-          listPokemon(`${i}`);
-        }
-      }
-      setLimit(nextLimit);
+    for (let i = limit + 1; i <= nextLimit && i <= 150; i++) {
+      await listPokemon(i);
     }
+    setLimit(nextLimit);
   };
 
-  const resetPokemonList = () => {
+  const resetPokemonList = async () => {
     setPokemonList([]);
     setLimit(30);
     setPokemonMap(new Map());
+    await fetchInitialPokemon();
   };
 
   const pokemonCard = (pokemon) => {
