@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styles from '@styles/PokemonList.module.css';
+import styles from '@/styles/PokemonList.module.css';
 
 const PokemonApp = () => {
   const [pokemonList, setPokemonList] = useState([]);

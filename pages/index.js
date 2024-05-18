@@ -1,5 +1,6 @@
 import Head from 'next/head'; // Importation du composant Head
-import PokemonList from "@/components/PokemonList"; 
+import PokemonList from "@/components/PokemonList";
+
 const HomePage = () => {
   return (
     <div>
