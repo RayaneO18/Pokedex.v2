@@ -4,7 +4,7 @@ import styles from '@/styles/PokemonList.module.css';
 const PokemonApp = () => {
   const [pokemonList, setPokemonList] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [limit, setLimit] = useState(30);
+  const [limit, setLimit] = useState(33);
   const [pokemonMap, setPokemonMap] = useState(new Map());
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const PokemonApp = () => {
   };
 
   const loadMorePokemon = async () => {
-    const nextLimit = limit + 15;
+    const nextLimit = limit + 33;
     for (let i = limit + 1; i <= nextLimit && i <= 150; i++) {
       await listPokemon(i);
     }
@@ -56,7 +56,7 @@ const PokemonApp = () => {
 
   const resetPokemonList = async () => {
     setPokemonList([]);
-    setLimit(1);
+    setLimit(33);
     setPokemonMap(new Map());
     await fetchInitialPokemon();
   };
