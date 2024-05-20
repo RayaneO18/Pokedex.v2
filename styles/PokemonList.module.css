@@ -1,9 +1,25 @@
+.title{
+  display: flex;
+  justify-content: center; 
+}
+.search {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  width: 100%; /* Prend toute la largeur disponible */
+  max-width: 300px; /* Limite la largeur max */
+  margin-left: auto; /* Centre */
+  margin-right: auto; /* Centre  */
+}
+
 .pokemonContainer {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+    gap: 2.7rem;
   }
-  
   .pokemon {
     background-color: #f8f8f8;
     border: 1px solid #ddd;
@@ -31,13 +47,7 @@
     font-weight: bold;
   }
   
-  .search {
-    margin-bottom: 1rem;
-    padding: 0.5rem;
-    width: 200px;
-  }
-  
-  .button {
+.button {
     margin-top: 1rem;
     padding: 0.5rem 1rem;
   }

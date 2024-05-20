@@ -85,21 +85,28 @@ const PokemonApp = () => {
   };
 
   return (
-    <div>
+    <div className={styles.hello}>
+        <h1 className={styles.title}>Liste des Pokémon</h1>
+
+      {/* Barre de recherche */}
       <input
-        id="search"
         type="text"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         onKeyDown={handleSearch}
         className={styles.search}
       />
+      {/* Liste des Pokémon */}
       <div id="pokemonContainer" className={styles.pokemonContainer}>
         {pokemonList.map((pokemon) => pokemonCard(pokemon))}
       </div>
+
+      {/* Bouton pour charger plus de Pokémon */}
       <button id="next" onClick={loadMorePokemon} className={styles.button}>
         Load More
       </button>
+
+      {/* Bouton pour revenir à la page d'accueil */}
       <button className={`${styles.home} ${styles.button}`} onClick={resetPokemonList}>
         Home
       </button>

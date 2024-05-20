@@ -6,11 +6,11 @@ const HomePage = () => {
     <div>
       <Head>
         <title>Pokedex</title>
-        <meta name="description" content="Liste des Pokémon générée par Create Next App" />
+        <meta name="description" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/icon-pokedex.png" /> {/* Assurez-vous que le chemin vers l'icône est correct */}
+        <link rel="icon" href="/icon-pokedex.png" />
       </Head>
-      <h1>Liste des Pokémon</h1>
+      
       <PokemonList />
     </div>
   );
