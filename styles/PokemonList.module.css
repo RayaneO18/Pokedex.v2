@@ -13,6 +13,23 @@
   margin-right: auto; /* Centre  */
 }
 
+.bouttonGeneration {
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  margin-top: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 2fr));
+}
+
+.genBoutton{
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  width: 100%; /* Prend toute la largeur disponible */
+  max-width: 175px; /* Limite la largeur max */
+}
+
 .pokemonContainer {
     display: flex;
     flex-wrap: wrap;
@@ -105,3 +122,4 @@
 .normal {
 	background-color: #F5F5F5;
 }
+

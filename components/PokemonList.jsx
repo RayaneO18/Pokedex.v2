@@ -6,6 +6,9 @@ const PokemonApp = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [limit, setLimit] = useState(33);
   const [pokemonMap, setPokemonMap] = useState(new Map());
+  // etat pour stocker les generations
+  const [generations, setGenerations] = useState(Array.from({ length: 9 }, (_, i) => i + 1));
+  const [selectedGeneration, setSelectedGeneration] = useState(generations[0]); // generation par defaut
 
   useEffect(() => {
     fetchInitialPokemon();
@@ -16,6 +19,17 @@ const PokemonApp = () => {
       await listPokemon(i);
     }
   };
+
+  const filterPokemonByGeneration = (generation) => {
+    const filteredPokemon = pokemonList.filter(pokemon => pokemon.generation === generation);
+    setPokemonList(filteredPokemon); //met a jour la liste de pokemon
+  };
+
+  const handleGenerationClick = (generation) => {
+    setSelectedGeneration(generation);
+    filterPokemonByGeneration(generation);
+  };
+
 
   const listPokemon = async (pokemonIdOrName) => {
     try {
@@ -48,7 +62,7 @@ const PokemonApp = () => {
 
   const loadMorePokemon = async () => {
     const nextLimit = limit + 33;
-    for (let i = limit + 1; i <= nextLimit && i <= 150; i++) {
+    for (let i = limit + 1; i <= nextLimit && i <= 151; i++) {
       await listPokemon(i);
     }
     setLimit(nextLimit);
@@ -85,7 +99,7 @@ const PokemonApp = () => {
   };
 
   return (
-    <div className={styles.hello}>
+    <div>
         <h1 className={styles.title}>Liste des Pokémon</h1>
 
       {/* Barre de recherche */}
@@ -96,6 +110,20 @@ const PokemonApp = () => {
         onKeyDown={handleSearch}
         className={styles.search}
       />
+
+      {/* bouton génération  */}
+      <div className={styles.bouttonGeneration}>
+        {generations.map(generation => (
+          <button
+            key={generation}
+            className={styles.genBoutton}
+            onClick={() => handleGenerationClick(generation)}
+          >
+            Génération {generation}
+          </button>
+        ))}
+      </div>
+
       {/* Liste des Pokémon */}
       <div id="pokemonContainer" className={styles.pokemonContainer}>
         {pokemonList.map((pokemon) => pokemonCard(pokemon))}
