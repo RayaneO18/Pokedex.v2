@@ -6,9 +6,7 @@ const PokemonApp = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [limit, setLimit] = useState(33);
   const [pokemonMap, setPokemonMap] = useState(new Map());
-  // etat pour stocker les generations
   const [generations, setGenerations] = useState(Array.from({ length: 9 }, (_, i) => i + 1));
-  const [selectedGeneration, setSelectedGeneration] = useState(generations[0]); // generation par defaut
 
   useEffect(() => {
     fetchInitialPokemon();
@@ -20,16 +18,21 @@ const PokemonApp = () => {
     }
   };
 
-  const filterPokemonByGeneration = (generation) => {
-    const filteredPokemon = pokemonList.filter(pokemon => pokemon.generation === generation);
-    setPokemonList(filteredPokemon); //met a jour la liste de pokemon
+  const fetchFirstGenerationPokemon = async () => {
+    setPokemonList([]);
+    setPokemonMap(new Map());
+    for (let i = 1; i <= 151; i++) {
+      await listPokemon(i);
+    }
   };
 
-  const handleGenerationClick = (generation) => {
-    setSelectedGeneration(generation);
-    filterPokemonByGeneration(generation);
+  const fetchSecondGenerationPokemon = async () => {
+    setPokemonList([]);
+    setPokemonMap(new Map());
+    for (let i = 152; i <= 251; i++) {
+      await listPokemon(i);
+    }
   };
-
 
   const listPokemon = async (pokemonIdOrName) => {
     try {
@@ -100,7 +103,7 @@ const PokemonApp = () => {
 
   return (
     <div>
-        <h1 className={styles.title}>Liste des Pokémon</h1>
+      <h1 className={styles.title}>Liste des Pokémon</h1>
 
       {/* Barre de recherche */}
       <input
@@ -111,25 +114,22 @@ const PokemonApp = () => {
         className={styles.search}
       />
 
-      {/* bouton génération  */}
+      {/* Boutons pour les générations */}
       <div className={styles.bouttonGeneration}>
-        {generations.map(generation => (
-          <button
-            key={generation}
-            className={styles.genBoutton}
-            onClick={() => handleGenerationClick(generation)}
-          >
-            Génération {generation}
-          </button>
-        ))}
+        <button onClick={fetchFirstGenerationPokemon} className={styles.genBoutton}>
+          1ère génération
+        </button>
+        <button onClick={fetchSecondGenerationPokemon} className={styles.genBoutton}>
+          2ème génération
+        </button>
       </div>
 
-      {/* Liste des Pokémon */}
+      {/* Liste des Pokemon */}
       <div id="pokemonContainer" className={styles.pokemonContainer}>
         {pokemonList.map((pokemon) => pokemonCard(pokemon))}
       </div>
 
-      {/* Bouton pour charger plus de Pokémon */}
+      {/* Bouton pour charger plus de Pokemon */}
       <button id="next" onClick={loadMorePokemon} className={styles.button}>
         Load More
       </button>
