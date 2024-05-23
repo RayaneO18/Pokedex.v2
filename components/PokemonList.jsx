@@ -6,7 +6,6 @@ const PokemonApp = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [limit, setLimit] = useState(33);
   const [pokemonMap, setPokemonMap] = useState(new Map());
-  const [generations, setGenerations] = useState(Array.from({ length: 9 }, (_, i) => i + 1));
 
   useEffect(() => {
     fetchInitialPokemon();
@@ -18,6 +17,7 @@ const PokemonApp = () => {
     }
   };
 
+  // fetch les 9 générations de Pokemon
   const fetchFirstGenerationPokemon = async () => {
     setPokemonList([]);
     setPokemonMap(new Map());
@@ -33,6 +33,64 @@ const PokemonApp = () => {
       await listPokemon(i);
     }
   };
+
+  const fetchThirdGenerationPokemon = async () => {
+    setPokemonList([]);
+    setPokemonMap(new Map());
+    for (let i = 252; i <= 386; i++) {
+      await listPokemon(i);
+    }
+  };
+
+  const fetchFourthGenerationPokemon = async () => {
+    setPokemonList([]);
+    setPokemonMap(new Map());
+    for (let i = 387; i <= 493; i++) {
+      await listPokemon(i);
+    }
+  };
+
+  const fetchFifthGenerationPokemon = async () => {
+    setPokemonList([]);
+    setPokemonMap(new Map());
+    for (let i = 494; i <= 649; i++) {
+      await listPokemon(i);
+    }
+  };
+
+  const fetchSixthGenerationPokemon = async () => {
+    setPokemonList([]);
+    setPokemonMap(new Map());
+    for (let i = 494; i <= 721; i++) {
+      await listPokemon(i);
+    }
+  };
+
+  const fetchSeventhGenerationPokemon = async () => {
+    setPokemonList([]);
+    setPokemonMap(new Map());
+    for (let i = 722; i <= 809; i++) {
+      await listPokemon(i);
+    }
+  };
+
+  const fetchEighthGenerationPokemon = async () => {
+    setPokemonList([]);
+    setPokemonMap(new Map());
+    for (let i = 810; i <= 905; i++) {
+      await listPokemon(i);
+    }
+  };
+
+  const fetchNinthGenerationPokemon = async () => {
+    setPokemonList([]);
+    setPokemonMap(new Map());
+    for (let i = 906; i <= 1025; i++) {
+      await listPokemon(i);
+    }
+  };
+// fin des fetch Pokemon
+
 
   const listPokemon = async (pokemonIdOrName) => {
     try {
@@ -116,13 +174,35 @@ const PokemonApp = () => {
 
       {/* Boutons pour les générations */}
       <div className={styles.bouttonGeneration}>
-        <button onClick={fetchFirstGenerationPokemon} className={styles.genBoutton}>
-          1ère génération
-        </button>
-        <button onClick={fetchSecondGenerationPokemon} className={styles.genBoutton}>
-          2ème génération
-        </button>
-      </div>
+  <button onClick={fetchFirstGenerationPokemon} className={styles.genBoutton}>
+    1ère génération
+  </button>
+  <button onClick={fetchSecondGenerationPokemon} className={styles.genBoutton}>
+    2ème génération
+  </button>
+  <button onClick={fetchThirdGenerationPokemon} className={styles.genBoutton}>
+    3ème génération
+  </button>
+  <button onClick={fetchFourthGenerationPokemon} className={styles.genBoutton}>
+    4ème génération
+  </button>
+  <button onClick={fetchFifthGenerationPokemon} className={styles.genBoutton}>
+    5ème génération
+  </button>
+  <button onClick={fetchSixthGenerationPokemon} className={styles.genBoutton}>
+    6ème génération
+  </button>
+  <button onClick={fetchSeventhGenerationPokemon} className={styles.genBoutton}>
+    7ème génération
+  </button>
+  <button onClick={fetchEighthGenerationPokemon} className={styles.genBoutton}>
+    8ème génération
+  </button>
+  <button onClick={fetchNinthGenerationPokemon} className={styles.genBoutton}>
+    9ème génération
+  </button>
+</div>
+
 
       {/* Liste des Pokemon */}
       <div id="pokemonContainer" className={styles.pokemonContainer}>
