@@ -4,27 +4,25 @@ import styles from '@/styles/PokemonList.module.css';
 const PokemonApp = () => {
   const [pokemonList, setPokemonList] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [limit, setLimit] = useState(33);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     fetchInitialPokemon();
   }, []);
 
-  const fetchInitialPokemon = async () => {
+  const fetchInitialPokemon = async () => { 
     setIsLoading(true);
     const promises = [];
-    for (let i = 1; i <= limit; i++) {
+    for (let i = 1; i <= 151; i++) {
       promises.push(listPokemon(i));
     }
-    //permet de faire plusieurs requetes et d'eviter les conflits
     await Promise.all(promises);
     setIsLoading(false);
   };
 
   const fetchGenerationPokemon = async (start, end) => {
     setIsLoading(true);
-    setPokemonList([]);
+    setPokemonList([]); 
     const promises = [];
     for (let i = start; i <= end; i++) {
       promises.push(listPokemon(i));
@@ -38,10 +36,9 @@ const PokemonApp = () => {
       const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonIdOrName}`);
       const data = await res.json();
       setPokemonList((prevList) => {
-        const newList = [...prevList, data];
-        const uniqueList = Array.from(new Set(newList.map(p => p.id)))
-                                .map(id => newList.find(p => p.id === id));
-        return uniqueList;
+        const newList = [...prevList];
+        newList[data.id - 1] = data; // Assigner le Pokémon à la bonne position
+        return newList;
       });
     } catch (error) {
       console.error("Error fetching Pokémon data:", error);
@@ -53,7 +50,7 @@ const PokemonApp = () => {
       event.preventDefault();
       setIsLoading(true);
       const searchPokemon = searchTerm.toLowerCase();
-      setPokemonList([]);
+      setPokemonList(new Array(1025).fill(null)); // Initialiser le tableau avec 1025 valeurs nulles
       await listPokemon(searchPokemon);
       setSearchTerm("");
       setIsLoading(false);
@@ -61,28 +58,9 @@ const PokemonApp = () => {
   };
 
 
-  const loadMorePokemon = async () => {
-    if (isLoading) return;
-    setIsLoading(true);
-    const nextLimit = limit + 33;
-    const promises = [];
-    for (let i = limit + 1; i <= nextLimit && i <= 151; i++) {
-      promises.push(listPokemon(i));
-    }
-    await Promise.all(promises);
-    setLimit(nextLimit);
-    setIsLoading(false);
-  };
-
-  const resetPokemonList = async () => {
-    setIsLoading(true);
-    setPokemonList([]);
-    setLimit(33);
-    await fetchInitialPokemon();
-    setIsLoading(false);
-  };
 
   const pokemonCard = (pokemon) => {
+    if (!pokemon) return null;
     const type = pokemon.types[0].type.name;
     const name = pokemon.name[0].toUpperCase() + pokemon.name.slice(1);
     const id = pokemon.id;
@@ -133,18 +111,10 @@ const PokemonApp = () => {
 
       {/* Liste des Pokemon */}
       <div id="pokemonContainer" className={styles.pokemonContainer}>
-        {pokemonList.map((pokemon) => pokemonCard(pokemon))}
+        {pokemonList.map((pokemon, index) => (
+          pokemonCard(pokemon)
+        ))}
       </div>
-
-      {/* Bouton pour charger plus de Pokemon */}
-      <button id="next" onClick={loadMorePokemon} className={styles.button} disabled={isLoading}>
-        {isLoading ? 'Loading...' : 'Load More'}
-      </button>
-
-      {/* Bouton pour revenir à la page d'accueil */}
-      <button className={`${styles.home} ${styles.button}`} onClick={resetPokemonList} disabled={isLoading}>
-        {isLoading ? 'Loading...' : 'Home'}
-      </button>
     </div>
   );
 };
